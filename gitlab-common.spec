@@ -1,12 +1,13 @@
-%define gitlab_user    gitlab
-%define gitlab_group   gitlab
-
+%define gitlab_user  git
+%define gitlab_group git
+%define gitlab_gid 264
+%define gitlab_uid 264
 Summary:	Just some shared directories and users
 Name:		gitlab-common
 Version:	8.6
 Release:	0.1
 License:	MIT
-Group:		Development/Building
+Group:		Base
 BuildRequires:	rpmbuild(macros) >= 1.202
 Provides:	group(%{gitlab_group})
 Provides:	user(%{gitlab_user})
@@ -47,8 +48,8 @@ chmod -R go= $RPM_BUILD_ROOT%{git_dir}/.ssh
 rm -rf $RPM_BUILD_ROOT
 
 %pre
-%groupadd -r %{gitlab_group}
-%useradd  -g %{gitlab_group} -s /bin/sh -r -c "GitLab" -d %{home_dir} %{gitlab_user}
+%groupadd -g %{gitlab_gid} -r %{gitlab_group}
+%useradd -u %{gitlab_uid} -g %{gitlab_group} -s /bin/sh -r -c "GitLab" -d %{home_dir} %{gitlab_user}
 
 %files
 %defattr(644,root,root,755)
