@@ -4,8 +4,8 @@
 %define gitlab_uid 264
 Summary:	Just some shared directories and users
 Name:		gitlab-common
-Version:	8.6
-Release:	0.1
+Version:	8.12
+Release:	1
 License:	MIT
 Group:		Base
 BuildRequires:	rpmbuild(macros) >= 1.202
@@ -20,25 +20,17 @@ Requires(pre):	/usr/sbin/useradd
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define git_dir          /srv/gitlab
-%define satellites_dir   %{git_dir}/satellites
-%define repositories_dir %{git_dir}/repositories
-%define build_dir        %{git_dir}/builds
-%define shared_dir       %{git_dir}/shared
-%define home_dir         %{git_dir}
+# directory for git user
+%define git_dir          /var/lib/gitlab
 
 %description
-Just some shared directories and users for gitlab shell and webapp.
+Shared directories and users for gitlab shell and webapp.
 
 %prep
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{satellites_dir} \
-	$RPM_BUILD_ROOT%{repositories_dir} \
-	$RPM_BUILD_ROOT%{build_dir} \
-	$RPM_BUILD_ROOT%{shared_dir} \
-	$RPM_BUILD_ROOT%{git_dir}/.ssh
+install -d $RPM_BUILD_ROOT%{git_dir}/.ssh
 
 touch $RPM_BUILD_ROOT%{git_dir}/.ssh/authorized_keys
 chmod -R u=rwX,g=rX,o= $RPM_BUILD_ROOT%{git_dir}
@@ -54,9 +46,5 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %dir %attr(-,%{gitlab_user},%{gitlab_group}) %{git_dir}
-%dir %attr(-,%{gitlab_user},%{gitlab_group}) %{build_dir}
-%dir %attr(-,%{gitlab_user},%{gitlab_group}) %{repositories_dir}
-%dir %attr(-,%{gitlab_user},%{gitlab_group}) %{satellites_dir}
-%dir %attr(-,%{gitlab_user},%{gitlab_group}) %{shared_dir}
 %dir %attr(-,%{gitlab_user},%{gitlab_group}) %{git_dir}/.ssh
 %config(noreplace) %verify(not md5 mtime size) %attr(-,%{gitlab_user},%{gitlab_group}) %{git_dir}/.ssh/authorized_keys
