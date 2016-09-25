@@ -38,7 +38,13 @@ rm -rf $RPM_BUILD_ROOT
 
 %pre
 %groupadd -g %{gitlab_gid} -r %{gitlab_group}
-%useradd -u %{gitlab_uid} -g %{gitlab_group} -s /bin/sh -r -c "GitLab" -d %{home_dir} %{gitlab_user}
+%useradd -u %{gitlab_uid} -g %{gitlab_group} -s /bin/sh -r -c "GitLab" -d %{git_dir} %{gitlab_user}
+
+%postun
+if [ "$1" = "0" ]; then
+	%userremove %{gitlab_user}
+	%groupremove %{gitlab_group}
+fi
 
 %files
 %defattr(644,root,root,755)
