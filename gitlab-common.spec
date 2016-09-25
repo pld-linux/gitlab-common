@@ -49,7 +49,7 @@ fi
 %files
 %defattr(644,root,root,755)
 %dir %{_sysconfdir}/gitlab
-%dir %attr(750,%{gitlab_user},%{gitlab_group}) %{git_dir}
+%dir %{git_dir}
 %dir %attr(700,%{gitlab_user},%{gitlab_group}) %{git_dir}/.ssh
 %config(noreplace) %verify(not md5 mtime size) %attr(600,%{gitlab_user},%{gitlab_group}) %{git_dir}/.ssh/authorized_keys
 %dir %attr(2770,%{gitlab_user},%{gitlab_group}) %{git_dir}/repositories
