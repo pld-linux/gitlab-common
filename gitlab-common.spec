@@ -30,7 +30,7 @@ Shared directories and users for gitlab shell and webapp.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir}/gitlab,%{git_dir}/.ssh}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/gitlab,%{git_dir}/{.ssh,repositories}}
 touch $RPM_BUILD_ROOT%{git_dir}/.ssh/authorized_keys
 
 %clean
@@ -45,4 +45,5 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_sysconfdir}/gitlab
 %dir %attr(750,%{gitlab_user},%{gitlab_group}) %{git_dir}
 %dir %attr(700,%{gitlab_user},%{gitlab_group}) %{git_dir}/.ssh
-%config(noreplace) %verify(not md5 mtime size) %attr(-,%{gitlab_user},%{gitlab_group}) %{git_dir}/.ssh/authorized_keys
+%config(noreplace) %verify(not md5 mtime size) %attr(600,%{gitlab_user},%{gitlab_group}) %{git_dir}/.ssh/authorized_keys
+%dir %attr(2770,%{gitlab_user},%{gitlab_group}) %{git_dir}/repositories
