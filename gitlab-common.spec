@@ -5,7 +5,7 @@
 Summary:	Just some shared directories and users
 Name:		gitlab-common
 Version:	8.12
-Release:	1
+Release:	2
 License:	MIT
 Group:		Base
 BuildRequires:	rpmbuild(macros) >= 1.202
@@ -30,7 +30,9 @@ Shared directories and users for gitlab shell and webapp.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir}/gitlab,%{git_dir}/{.ssh,repositories}}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/gitlab,%{git_dir}/{.ssh,repositories}} \
+	$RPM_BUILD_ROOT%{_localstatedir}/log/{gitlab,archive/gitlab}
+
 touch $RPM_BUILD_ROOT%{git_dir}/.ssh/authorized_keys
 
 %clean
@@ -53,3 +55,5 @@ fi
 %dir %attr(700,%{gitlab_user},%{gitlab_group}) %{git_dir}/.ssh
 %config(noreplace) %verify(not md5 mtime size) %attr(600,%{gitlab_user},%{gitlab_group}) %{git_dir}/.ssh/authorized_keys
 %dir %attr(2770,%{gitlab_user},%{gitlab_group}) %{git_dir}/repositories
+%dir %attr(771,root,%{gitlab_group}) %{_localstatedir}/log/gitlab
+%dir %attr(771,root,%{gitlab_group}) %{_localstatedir}/log/archive/gitlab
