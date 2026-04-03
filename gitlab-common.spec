@@ -5,7 +5,7 @@
 Summary:	Just some shared directories and users
 Name:		gitlab-common
 Version:	8.12
-Release:	2
+Release:	3
 License:	MIT
 Group:		Base
 BuildRequires:	rpmbuild(macros) >= 1.202
